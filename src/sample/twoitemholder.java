@@ -2,31 +2,31 @@ package sample;
 
 public class twoitemholder {
 
-    int start = -10;
-    int end =   -10;
+    String start;
+    String end;
 
     public twoitemholder() {
     }
 
-    public twoitemholder(int start, int end) {
+    public twoitemholder(String start, String end) {
         this.start = start;
         this.end = end;
     }
 
 
-    public int getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public int getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(int end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

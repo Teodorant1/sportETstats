@@ -2,11 +2,23 @@ package sample;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
+
+        ArrayList<String> numbas = new ArrayList<>();
+        numbas.add("1");
+        numbas.add("2");
+        numbas.add("3");
+        numbas.add("4");
+        numbas.add("5");
+        System.out.println(numbas);
+        numbas.add(0,"0");
+        System.out.println(numbas);
+
 
         sqlsportbot sqlsportbot1 = new sqlsportbot();
         //  sqlsportbot1.insertMatch(
@@ -23,7 +35,6 @@ public class Main {
         //  System.out.println(playerHashMap.size());
         //  playerHashMap.put("Paloki", new Player());
         //  System.out.println(playerHashMap.size());
-
 
 
         Match match1 = sqlsportbot1.pullMatch("23736", "23736", "23736");

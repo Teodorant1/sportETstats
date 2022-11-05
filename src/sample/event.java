@@ -7,6 +7,9 @@ public class event {
     String time;
     String teamname;
 
+    public event() {
+    }
+
     public event(String player, String description, String time, String teamname) {
         this.player = player;
         this.description = description;
