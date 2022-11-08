@@ -1,7 +1,7 @@
 package sample;
 
 public class event {
-    String player;
+    String player="placeholder";
     String description;
     int points = 0;
     String time;
