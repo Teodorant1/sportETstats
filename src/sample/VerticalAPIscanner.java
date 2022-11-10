@@ -15,7 +15,7 @@ public class VerticalAPIscanner {
         eventSorter eventSorter = new eventSorter(match);
         ArrayList<ArrayList<ArrayList<event>>> TeamEvents = eventSorter.getTeamSlices();
         JSONArray jsonArray = playerGroupAnalyzer.doublesqueeze(TeamEvents);
-    //  System.out.println(jsonArray.toString());
+     System.out.println(jsonArray.toString());
 
         return jsonArray.toString();
 

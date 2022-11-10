@@ -8,12 +8,20 @@ public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
 
-    APIserver apIserver = new APIserver();
-    apIserver.launch();
+
+        HashMap<String, String> paloki = new HashMap<>();
+        System.out.println("hash size:" + paloki.size());
+        paloki.put("paloki","paloki");
+        System.out.println("hash size:" + paloki.size());
 
 
-//  VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
-//  verticalAPIscanner.maintest("23736");
+
+        VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
+        verticalAPIscanner.maintest("23736");
+
+        APIserver apIserver = new APIserver();
+        apIserver.launch();
+
 
 //    HashMap <String , Integer> paloki = new HashMap<>() ;
 //
@@ -25,8 +33,6 @@ public class Main {
 //    paloki.put("bla" , 3);
 //
 //    System.out.println(paloki.get("bla"));
-
-
 
 
     }

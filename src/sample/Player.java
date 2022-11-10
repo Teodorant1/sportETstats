@@ -12,18 +12,27 @@ public class Player {
     }
 
 
-    public void printPoints ()
-    {
+    public void printPoints() {
         System.out.println(this.getPersonalscore());
     }
 
-    public JSONObject getOverview ()
-    {JSONObject playerreportcard = new JSONObject();
+    public JSONObject getOverview() {
+        JSONObject playerreportcard = new JSONObject();
 
-        playerreportcard.put("name"   ,this.getFullname());
-        playerreportcard.put("points" ,this.getPersonalscore());
+        double a = personalscore;
+        double b = playtime;
+
+        double SCTratio;
+        if (playtime > 0) {
+             SCTratio = a / b;
+        } else { SCTratio = 1; }
+    //    System.out.println(" pointsratio is "+  Double.valueOf(SCTratio) );
+        playerreportcard.put("name", this.getFullname());
+        playerreportcard.put("points", this.getPersonalscore());
+    //    playerreportcard.put("pointsratio", SCTratio);
     //  playerreportcard.put("time",this.getPlaytime());
-        return playerreportcard;}
+        return playerreportcard;
+    }
 
 
     public Player() {
@@ -31,12 +40,16 @@ public class Player {
 
     int personalscore = 0;
     int playtime = 0;
-    String fullname="placeholder";
+    String fullname = "placeholder";
 
     public String getFullname() {
-        return fullname;}
+        return fullname;
+    }
+
     public void setFullname(String fullname) {
-        this.fullname = fullname;}
+        this.fullname = fullname;
+    }
+
     public int getPersonalscore() {
         return personalscore;
     }

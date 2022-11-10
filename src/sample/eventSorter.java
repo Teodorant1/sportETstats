@@ -4,13 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class eventSorter {
+    Match match1;
     ArrayList<event> events1 = new ArrayList<>();
-    ArrayList<ArrayList<event>> megaevents1 = new ArrayList<>();
     ArrayList<event> team1events = new ArrayList<>();
     ArrayList<event> team2events = new ArrayList<>();
-    Match match1;
+    HashMap<String,ArrayList<event>>            teamevents = new HashMap<>();
+    HashMap<String,ArrayList<ArrayList<event>>> teamslices = new HashMap<>();
 
     public eventSorter(Match match1) {
         this.match1 = match1;
@@ -19,35 +21,36 @@ public class eventSorter {
     public eventSorter() {
     }
 
-    public void processAllquadrants() {
-        processQuadrant(this.match1.q1);
-        processQuadrant(this.match1.q2);
-        processQuadrant(this.match1.q3);
-        processQuadrant(this.match1.q4);
-    }
 
-    public ArrayList<ArrayList<ArrayList<event>>> getTeamSlices() {
-        processAllquadrants();
+
+
+    public void processQuadrant(String matchQuadrant , int quadrantID  )
+    {   JSONObject jsonObject1 = new JSONObject(matchQuadrant);
+        JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
+        JSONArray jsonArray = jsonObject2.getJSONArray("pbp");
+        ArrayList<event> events = jsontoarraylist(jsonArray);
+
+        events1.addAll(events);
+        Splitevents();
+        events1.clear();
+
+
+
+    }
+    public void processAllquadrants() {
+        processQuadrant(this.match1.q1 , 1);
+        processQuadrant(this.match1.q2 , 2);
+        processQuadrant(this.match1.q3 , 3);
+        processQuadrant(this.match1.q4 , 4);
+    }
+    public ArrayList<ArrayList<ArrayList<event>>> getTeamSlices()
+    {   processAllquadrants();
         ArrayList<ArrayList<event>> teamSlices1 = createSlices(team1events);
         ArrayList<ArrayList<event>> teamSlices2 = createSlices(team2events);
         ArrayList<ArrayList<ArrayList<event>>> TeamEvents = new ArrayList<>();
         TeamEvents.add(teamSlices1);
         TeamEvents.add(teamSlices2);
-
-        return TeamEvents;
-
-
-    }
-
-    public void processQuadrant(String matchQuadrant)
-    {   JSONObject jsonObject1 = new JSONObject(matchQuadrant);
-        JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
-        JSONArray jsonArray = jsonObject2.getJSONArray("pbp");
-        ArrayList<event> events = jsontoarraylist(jsonArray);
-        events1.addAll(events);
-        Splitevents();
-        events1.clear();}
-
+        return TeamEvents;}
     public ArrayList<event> jsontoarraylist(JSONArray jsonArray) {
         ArrayList<event> events0 = new ArrayList<>();
 
@@ -226,21 +229,7 @@ public class eventSorter {
     //       return jsonArrays;
     //   }
 
-    public ArrayList<event> getEvents1() {
-        return events1;
-    }
 
-    public void setEvents1(ArrayList<event> events1) {
-        this.events1 = events1;
-    }
-
-    public ArrayList<ArrayList<event>> getMegaevents1() {
-        return megaevents1;
-    }
-
-    public void setMegaevents1(ArrayList<ArrayList<event>> megaevents1) {
-        this.megaevents1 = megaevents1;
-    }
 
 
     public Match getMatch1() {

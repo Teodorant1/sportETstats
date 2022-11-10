@@ -76,12 +76,12 @@ public class PlayerGroupAnalyzer {
 
         JSONObject slicedHolder = new JSONObject();
         slicedHolder.put("time", playerHashMap1.get("time").getPlaytime());
-        slicedHolder.put("score", playerHashMap1.get("score").getPersonalscore());
+//      slicedHolder.put("score", playerHashMap1.get("score").getPersonalscore());
 
         JSONArray slicedJson = new JSONArray();
         playerHashMap1.forEach((key, value) -> {
 
-            if (!key.equals("time"  )|| (!key.equals("score"))) {
+            if (!key.equals("time"  ) && (!key.equals("score"))) {
                 slicedJson.put(value.getOverview());
             }
             if (playerHashMap1.size() < 5) {
@@ -89,6 +89,19 @@ public class PlayerGroupAnalyzer {
             }
 
         });
+        HashMap<String, Player> playerHashMap2 = new HashMap<>();
+        playerHashMap2.putAll(playerHashMap1);
+        ArrayList<Integer> playerscores = new ArrayList<>();
+        playerHashMap2.forEach((key, value) -> {
+            playerscores.add(value.getPersonalscore());
+        });
+        int teampoints = 0;
+        for (int n = 0; n < playerscores.size(); n++)
+        {teampoints = teampoints + playerscores.get(n);}
+        slicedHolder.put("score" , teampoints );
+
+
+
 
         slicedHolder.put("slice", slicedJson);
         //    System.out.println(" squeezeResultsFromHashMap "+slicedJson);
@@ -104,7 +117,9 @@ public class PlayerGroupAnalyzer {
         if (letime == 0 && SwitchCheck(slice, 0)) {
             for (int i = 0; i < slice.size(); i++) {
                 if (slice.get(i).getDescription().equals("Ingresso")) {
-                    Player player = new Player(0, 0, slice.get(i).getPlayer());
+                    Player player = new Player(0, 0,
+
+                            slice.get(i).getPlayer());
                     playerHashMap1.put(player.getFullname(), player);
                 }
                 if (slice.get(i).getDescription().equals("Uscita")) {
@@ -121,7 +136,7 @@ public class PlayerGroupAnalyzer {
             //
             for (int i = 0; i < slice.size(); i++) {
                 if (!slice.get(i).getPlayer().equals("placeholder") && !slice.get(i).getPlayer().equals("placeholder placeholder")) {
-                    playerHashMap1.put(slice.get(i).getPlayer(), new Player(0, 0,
+                    playerHashMap1.put(slice.get(i).getPlayer(), new Player(0, letime,
                             slice.get(i).getPlayer()));
                 }
                 //    System.out.println(" hash size "+playerHashMap.size());
@@ -151,25 +166,20 @@ public class PlayerGroupAnalyzer {
             Player actuallytime = new Player(0, letime, "time");
             playerHashMap1.put("time", actuallytime);
         }
-        ArrayList<Integer> playerscores = new ArrayList<>();
-        playerHashMap1.forEach((key, value) -> {
-            playerscores.add(value.getPersonalscore());
-        });
-        int teampoints = 0;
-
-        for (int n = 0; n < playerscores.size(); n++)
-        {teampoints = teampoints + playerscores.get(n);}
-
-        Player teamscore = new Player(teampoints, letime , "score");
-        playerHashMap.put("score" , teamscore );
-
-        //        playerHashMap1.forEach((key, value) -> {
-        //
-        //            if (!key.equals("time")) {slicedJson.put(value.getOverview());}
-        //            if (playerHashMap1.size()<5)
-        //            {  System.out.println("Size is smaller than 5");  }
-        //
-        //        });
+    //    ArrayList<Integer> playerscores = new ArrayList<>();
+    //    playerHashMap1.forEach((key, value) -> {
+    //        playerscores.add(value.getPersonalscore());
+    //    });
+    //    int teampoints = 0;
+//
+    //    for (int n = 0; n < playerscores.size(); n++)
+    //    {teampoints = teampoints + playerscores.get(n);}
+//
+    //    Player teamscore = new Player(teampoints, letime , "score");
+//
+    //    if (playerHashMap1.containsKey("score")) {playerHashMap1.remove("score");}
+//
+    //    playerHashMap1.put("score" , teamscore );
 
 //      System.out.println(" sliceToHashMap " +playerHashMap1);
         return playerHashMap1;
