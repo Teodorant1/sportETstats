@@ -165,7 +165,7 @@ public class eventSorter {
                     team1events.add(events1.get(i));
                     //    teamevents.put(events1.get(i).getTeamname(), team1events);
                 }
-                if (team1events.size() > 0) {
+                if (team1events.size() > 0 && i > 0) {
                     if (events1.get(i).teamname.equals(team1events.get(0).getTeamname())) {
                         team1events.add(events1.get(i));
                     } else {
@@ -181,20 +181,21 @@ public class eventSorter {
         String teamname2 = team2events.get(0).getTeamname();
 
 
-     //   if (quadrantID == 1) {
-     //       System.out.println(team2events.get(team2events.size() - 1).getPlayer());
-     //       System.out.println(team2events.get(team2events.size() - 1).getTime());
-     //       System.out.println(team2events.get(team2events.size()-1).getDescription());
-     //   }
+        //   if (quadrantID == 1) {
+        //       System.out.println(team2events.get(team2events.size() - 1).getPlayer());
+        //       System.out.println(team2events.get(team2events.size() - 1).getTime());
+        //       System.out.println(team2events.get(team2events.size()-1).getDescription());
+        //   }
 
 
         teamevents.put(teamname1, team1events);
         teamevents.put(teamname2, team2events);
 
-        if (quadrantID == 1)
-        {   System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size()-1).getPlayer());
-            System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size()-1).getDescription());
-            System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size()-1).getTime());}
+    //   if (quadrantID == 1) {
+    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getPlayer());
+    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getDescription());
+    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getTime());
+    //   }
 
         return teamevents;
     }
@@ -271,9 +272,10 @@ public class eventSorter {
                 }
                 //makes sure it is in the middle
                 if (i > 0 && i < eventArrayList.size() - 1) {
-
+                    boolean switched = false;
                     // if the previous one is a switch
                     if (SwitchCheck(eventArrayList, i - 1)) {
+                        switched = true;
                         ArrayList<event> copiedslices = new ArrayList<>();
                         copiedslices.addAll(slices);
                         teamSlices.add(copiedslices);
@@ -286,7 +288,8 @@ public class eventSorter {
                         slices.add(eventArrayList.get(i));
                     }
                     // if the next one is a switch
-                    else if (SwitchCheck(eventArrayList, i + 1)) {
+                    if (SwitchCheck(eventArrayList, i + 1)) {
+                        switched = true;
                         ArrayList<event> copiedslices = new ArrayList<>();
 
                         slices.add(eventArrayList.get(i));
@@ -298,23 +301,27 @@ public class eventSorter {
                         copiedslices.addAll(slices);
                         teamSlices.add(copiedslices);
                         slices.clear();
-                    } else {
-                        slices.add(eventArrayList.get(i));
                     }
+
+                    if (!switched) {slices.add(eventArrayList.get(i));}
+
+
 
                 }
 
                 if ((i == eventArrayList.size() - 1)) {
-                    // the phantom 7 bug happens before here, the event is'nt present after this
-                    // if (eventArrayList.get(i - 1).getDescription().equals("Ingresso") && eventArrayList.get(i - 1).getPlayer().equals("Jordan Howard")) {
-                    //     System.out.println(eventArrayList.get(i + 1).getPlayer());
-                    //     System.out.println(eventArrayList.get(i + 1).getDescription());
-                    //     System.out.println(eventArrayList.get(i + 1).getTime());
-                    // }
+                   // the phantom 7 bug happens before here, the event is'nt present after this
+               //     if (  eventArrayList.get(i).getTime().equals("00:00")) {
+               //         System.out.println(eventArrayList.get(i).getPlayer());
+               //         System.out.println(eventArrayList.get(i).getDescription());
+               //         System.out.println(eventArrayList.get(i).getTime());
+               //     }
 
                     if (SwitchCheck(eventArrayList, i - 1)) {
 
-                        ArrayList<event> copiedslices = new ArrayList<>();
+                 //       if (  eventArrayList.get(i).getTime().equals("00:00")) {System.out.println("$$$$$$$");}
+
+                            ArrayList<event> copiedslices = new ArrayList<>();
                         copiedslices.addAll(slices);
                         teamSlices.add(copiedslices);
                         slices.clear();
@@ -330,6 +337,7 @@ public class eventSorter {
                         slices.add(start);
                         slices.add(eventArrayList.get(i));
                         slices.add(stop);
+                        teamSlices.add(slices);
                     } else {
                         ArrayList<event> copiedslices = new ArrayList<>();
                         slices.add(eventArrayList.get(i));

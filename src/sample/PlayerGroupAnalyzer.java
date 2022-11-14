@@ -36,11 +36,11 @@ public class PlayerGroupAnalyzer {
         quadrants.add(quadrant3);
         quadrants.add(quadrant4);
 
-        // the phantom seven bug happens before this because it isn't present in the array
-       int size = quadrant1.get("GeVi Napoli Basket").size();
-       System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getPlayer());
-       System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getTime());
-       System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getDescription());
+    // the phantom seven bug happens before this because it isn't present in the array
+    //   int size = quadrant1.get("GeVi Napoli Basket").size();
+    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getPlayer());
+    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getTime());
+    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getDescription());
 
 
         JSONArray finalproduct = new JSONArray();
