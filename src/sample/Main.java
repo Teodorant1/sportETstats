@@ -1,5 +1,8 @@
 package sample;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -8,16 +11,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
 
+      //   JSONArray jsonArray = new JSONArray();
+      //   jsonArray.put(1);
+      //   jsonArray.put(2);
+      //   jsonArray.put(3);
+      //   jsonArray.put(4);
+      //   jsonArray.put(5);
 
-        HashMap<String, String> paloki = new HashMap<>();
-        System.out.println("hash size:" + paloki.size());
-        paloki.put("paloki","paloki");
-        System.out.println("hash size:" + paloki.size());
-
-
+      //   System.out.println(jsonArray);
+      //   System.out.println(jsonArray.length());
+      //   System.out.println(jsonArray.get(4));
 
         VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
-        verticalAPIscanner.maintest("23736");
+        verticalAPIscanner.maintest("23740");
 
         APIserver apIserver = new APIserver();
         apIserver.launch();

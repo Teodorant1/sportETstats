@@ -21,11 +21,6 @@ public class Player {
 
         double a = personalscore;
         double b = playtime;
-
-        double SCTratio;
-        if (playtime > 0) {
-             SCTratio = a / b;
-        } else { SCTratio = 1; }
     //    System.out.println(" pointsratio is "+  Double.valueOf(SCTratio) );
         playerreportcard.put("name", this.getFullname());
         playerreportcard.put("points", this.getPersonalscore());
