@@ -22,10 +22,7 @@ public class PlayerGroupAnalyzer {
             (HashMap<Integer, HashMap<String, ArrayList<ArrayList<event>>>> input) {
         // input is all quadrants and all both teams
         ArrayList<String> teamnames = new ArrayList<>();
-        input.get(1).forEach((key, value) -> {
-            teamnames.add(key);
-        });
-
+        input.get(1).forEach((key, value) -> {teamnames.add(key);});
         HashMap<String, ArrayList<ArrayList<event>>> quadrant1 = input.get(1);
         HashMap<String, ArrayList<ArrayList<event>>> quadrant2 = input.get(2);
         HashMap<String, ArrayList<ArrayList<event>>> quadrant3 = input.get(3);

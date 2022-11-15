@@ -191,11 +191,11 @@ public class eventSorter {
         teamevents.put(teamname1, team1events);
         teamevents.put(teamname2, team2events);
 
-    //   if (quadrantID == 1) {
-    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getPlayer());
-    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getDescription());
-    //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getTime());
-    //   }
+        //   if (quadrantID == 1) {
+        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getPlayer());
+        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getDescription());
+        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getTime());
+        //   }
 
         return teamevents;
     }
@@ -222,45 +222,60 @@ public class eventSorter {
 // size  1 2 3 4 5 6 7 8 9 10
 
     // the phantom 7 bug happens before here, the event is'nt present in the array list
+    public void RetconPlayerExistence(ArrayList<ArrayList<event>> teamSlices, String retconPlayer) {
+        for (int i = 0; i < teamSlices.size(); i++) {
+            String teamname = teamSlices.get(0).get(1).getTeamname();
+            event retcon = new event(retconPlayer, "retcon", "5:00", teamname);
+            teamSlices.get(i).add(1, retcon);
+        }
+    }
+
+    // 1 2 3 4 5
+    // i = 4
+    public Boolean isPresentAtStart(ArrayList<event> eventArrayList, int index, String playername) {
+        for (int i = 0; i < index; i++) {
+            if (eventArrayList.get(i).getDescription().equals("Ingresso") && eventArrayList.get(i).getPlayer().equals(playername)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ArrayList<ArrayList<event>> createSlices(ArrayList<event> eventArrayList) {
+     // ArrayList<String> PresentPlayers = new ArrayList<>();
         ArrayList<ArrayList<event>> teamSlices = new ArrayList<>();
         ArrayList<event> slices = new ArrayList<>();
         for (int i = 0; i < eventArrayList.size(); i++) {
+
+
+
+            //    if (i > 0 && !PresentPlayers.contains(eventArrayList.get(i).getPlayer())
+            //            && !eventArrayList.get(i).getDescription().equals("Ingresso")) {
+            //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
+            //    }
+            //    PresentPlayers.add(eventArrayList.get(i).getTeamname());
+
             // checks for switch
             if (SwitchCheck(eventArrayList, i)) {
-                //  if (eventArrayList.get(i).getPlayer().equals("Andrea Zerini") && eventArrayList.get(i).getDescription().equals("Uscita") ) {
-                //      System.out.println(eventArrayList.get(i+1).getPlayer());
-                //      System.out.println(eventArrayList.get(i+1).getDescription());
-                //      System.out.println(eventArrayList.get(i+1).getTime());
-                //      System.out.println(i+1);
-                //      System.out.println(eventArrayList.size());}
-                //     if (eventArrayList.get(i).getPlayer().equals("Jordan Howard") && eventArrayList.get(i).getDescription().equals("Ingresso") ) {
-                //       System.out.println(eventArrayList.get(i-1).getPlayer());
-                //       System.out.println(eventArrayList.get(i-1).getDescription());
-                //       System.out.println(eventArrayList.get(i-1).getTime());
-                //     //  System.out.println(i+1);
-                //     //  System.out.println(eventArrayList.size());
-                //         System.out.println("Size1: "+slices.size());
-                //     }
-                // checks if it's the very last one
 
-                //if (i == eventArrayList.size() - 1) {
-                //    slices.add(eventArrayList.get(i));
-                //    ArrayList<event> copiedslices = new ArrayList<>();
-                //    copiedslices.addAll(slices);
-                //    teamSlices.add(copiedslices);
-                //    slices.clear();} else {
-                slices.add(eventArrayList.get(i));
-                //     if (eventArrayList.get(i).getPlayer().equals("Jordan Howard") && eventArrayList.get(i).getDescription().equals("Ingresso") ) {
-                //       //  System.out.println(eventArrayList.get(i-1).getPlayer());
-                //       //  System.out.println(eventArrayList.get(i-1).getDescription());
-                //       //  System.out.println(eventArrayList.get(i-1).getTime());
-                //         //  System.out.println(i+1);
-                //         //  System.out.println(eventArrayList.size());
-                //         System.out.println("Size2: "+slices.size());
-                //     }
-                //  }
+            //    if (i > 0 && isPresentAtStart(eventArrayList, i, eventArrayList.get(i).getPlayer())
+            //            &&  eventArrayList.get(i).getDescription().equals("Uscita")  ) {
+            //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
+            //    }
+
+                // checks if it's the very last one
+                if (i == eventArrayList.size() - 1) {
+                    slices.add(eventArrayList.get(i));
+                    ArrayList<event> copiedslices = new ArrayList<>();
+                    copiedslices.addAll(slices);
+                    teamSlices.add(copiedslices);
+                    slices.clear();
+                } else {
+                    slices.add(eventArrayList.get(i));
+                }
+
             } else {
 
                 if (i == 0) {
@@ -303,25 +318,26 @@ public class eventSorter {
                         slices.clear();
                     }
 
-                    if (!switched) {slices.add(eventArrayList.get(i));}
-
+                    if (!switched) {
+                        slices.add(eventArrayList.get(i));
+                    }
 
 
                 }
 
                 if ((i == eventArrayList.size() - 1)) {
-                   // the phantom 7 bug happens before here, the event is'nt present after this
-               //     if (  eventArrayList.get(i).getTime().equals("00:00")) {
-               //         System.out.println(eventArrayList.get(i).getPlayer());
-               //         System.out.println(eventArrayList.get(i).getDescription());
-               //         System.out.println(eventArrayList.get(i).getTime());
-               //     }
+                    // the phantom 7 bug happens before here, the event is'nt present after this
+                    //     if (  eventArrayList.get(i).getTime().equals("00:00")) {
+                    //         System.out.println(eventArrayList.get(i).getPlayer());
+                    //         System.out.println(eventArrayList.get(i).getDescription());
+                    //         System.out.println(eventArrayList.get(i).getTime());
+                    //     }
 
                     if (SwitchCheck(eventArrayList, i - 1)) {
 
-                 //       if (  eventArrayList.get(i).getTime().equals("00:00")) {System.out.println("$$$$$$$");}
+                        //       if (  eventArrayList.get(i).getTime().equals("00:00")) {System.out.println("$$$$$$$");}
 
-                            ArrayList<event> copiedslices = new ArrayList<>();
+                        ArrayList<event> copiedslices = new ArrayList<>();
                         copiedslices.addAll(slices);
                         teamSlices.add(copiedslices);
                         slices.clear();

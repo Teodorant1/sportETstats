@@ -5,11 +5,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
+
+        double ten = 123;
+
+        System.out.println(ten/2.5);
+
 
       //   JSONArray jsonArray = new JSONArray();
       //   jsonArray.put(1);
