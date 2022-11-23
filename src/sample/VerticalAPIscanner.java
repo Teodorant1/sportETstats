@@ -24,7 +24,7 @@ public class VerticalAPIscanner {
 
 
         JSONArray jsonArray = playerGroupAnalyzer.getJsonInQuadrants(TeamEvents);
-        System.out.println(jsonArray);
+    //  System.out.println(jsonArray);
         return jsonArray.toString();
 
     }}
