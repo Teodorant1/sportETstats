@@ -10,13 +10,9 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
-public class ElegantHandler implements HttpHandler {
-
-    public ElegantHandler() {
-    }
+public class loginhandler implements HttpHandler {
 
     sqlsportbot sqlsportbot = new sqlsportbot();
-
 
     @Override
     public void handle(HttpExchange t) throws IOException {
@@ -42,34 +38,22 @@ public class ElegantHandler implements HttpHandler {
         os.close();
     }
 
-    public String handlerequest(String entrystring)
-            throws SQLException, IOException {
+    public String handlerequest(String entrystring) throws SQLException, IOException {
         JSONObject request = new JSONObject(entrystring);
-        System.out.println(23740);
 
         String username = request.getString("username");
         String password = request.getString("password");
-        String method = request.getString("method");
-        //  Boolean AccessCard = sqlsportbot.IsAccountPresent(username,password);
-        int GameID1 = 23740;
+    //  String method = request.getString("method");
 
-        //  System.out.println(request.getString("method"));
-        if (method.equals("getslice")) {
-            //    System.out.println("OP SUCCESS");
-            GameID1 = sqlsportbot.get_lastgameid(username, password);
-        }
+        Boolean AccessCard = sqlsportbot.IsAccountPresent(username,password);
+        System.out.println(AccessCard);
 
-        System.out.println(2);
+        String theresponse = "fail";
 
-//      int GameID1 = request.getInt("gameID");
-        int team = request.getInt("teamID");
-        int quadrant = request.getInt("QuarterNumber");
-        ElegantQuadrantCutter elegantQuadrantCutter = new ElegantQuadrantCutter();
+        if (AccessCard)
+        {theresponse = "gamebreakdown";}
 
 
-        JSONObject theresponse = elegantQuadrantCutter.getQuadrant(quadrant, team,
-                String.valueOf(GameID1));
-
-        return String.valueOf(theresponse);
+        return theresponse;
     }
 }

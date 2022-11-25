@@ -2,20 +2,26 @@ package sample;
 
 public class account {
 
-
-
     String username;
     String email;
     String status;
     String password;
+    int lastgameid;
 
-    public account(String username, String email, String status, String password) {
+    public account(String username, String email, String status, String password, int lastgameid) {
         this.username = username;
         this.email = email;
         this.status = status;
         this.password = password;
+        this.lastgameid = lastgameid;
+    }
+    public int getLastgameid() {
+        return lastgameid;
     }
 
+    public void setLastgameid(int lastgameid) {
+        this.lastgameid = lastgameid;
+    }
 
     public String getUsername() {
         return username;

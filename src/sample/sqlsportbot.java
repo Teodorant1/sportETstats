@@ -3,6 +3,7 @@ package sample;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class sqlsportbot {
     static String USER = "root";
@@ -11,20 +12,21 @@ public class sqlsportbot {
     httpfetch httpfetch1 = new httpfetch();
 
 
-    public sqlsportbot (  ){  }
+    public sqlsportbot() {
+    }
 
     public void insert_blog_post(String title, String author,
-                                 String text) throws SQLException  {
+                                 String text) throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         PreparedStatement preparedStatement =
                 conn.prepareStatement
                         ("INSERT INTO sportstats.blogposts ( title , author , text  ) VALUES ( ?, ?, ? )");
-        preparedStatement.setString( 1 , title);
-        preparedStatement.setString( 2 , author);
-        preparedStatement.setString( 3 , text);
+        preparedStatement.setString(1, title);
+        preparedStatement.setString(2, author);
+        preparedStatement.setString(3, text);
     }
 
-    public ArrayList<blogpost> pull_blog_posts () throws SQLException {
+    public ArrayList<blogpost> pull_blog_posts() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         ArrayList<blogpost> resultHolder = new ArrayList<>();
         PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM sportstats.accounts");
@@ -39,17 +41,75 @@ public class sqlsportbot {
     }
 
 
-    public void insert_account(String username, String email, String status, String password) throws SQLException {
+    public void insert_account(String username, String email, String status, String password, int gameid)
+            throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO sportstats.accounts ( username , email , status , password ) VALUES ( ?, ?, ?, ? )");
-        preparedStatement.setString( 1, username);
-        preparedStatement.setString( 2, email);
-        preparedStatement.setString( 3, status);
-        preparedStatement.setString( 4, password);
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO sportstats.accounts ( username , email , status , password , lastgameid ) VALUES ( ?, ?, ?, ? , ?)");
+
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, email);
+        preparedStatement.setString(3, status);
+        preparedStatement.setString(4, password);
+        preparedStatement.setString(5, "23740");
 
         preparedStatement.executeUpdate();
         conn.close();
     }
+
+    public int get_lastgameid(String username, String password) throws SQLException {
+        ArrayList<Integer> resultHolder = new ArrayList<>();
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM sportstats.accounts WHERE username=? AND password=?");
+
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, password);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            resultHolder.add(rs.getInt("lastgameid"));
+        }
+        conn.close();
+        return resultHolder.get(0);
+    }
+
+    public void update_lastgameID(String username, String password, int gameid) throws SQLException {
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE sportstats.accounts SET lastgameid=? WHERE username=? AND password=?");
+
+        preparedStatement.setInt(1, gameid);
+        preparedStatement.setString(2, username);
+        preparedStatement.setString(3, password);
+
+        preparedStatement.executeUpdate();
+        conn.close();
+    }
+
+
+    public Boolean IsAccountPresent(String username,
+                                    String password) throws SQLException {
+        ArrayList<account> accounts = pull_accounts();
+
+        Boolean boolean1 = false;
+
+        for (int i = 0; i < accounts.size(); i++) {
+
+      //    System.out.println(accounts.get(i).getPassword());
+      //    System.out.println(accounts.get(i).getUsername());
+
+            if (Objects.equals(accounts.get(i).getPassword(), password)
+                    &&
+                    Objects.equals(accounts.get(i).getUsername(), username)) {
+                System.out.println(accounts.get(i).getPassword());
+                System.out.println(accounts.get(i).getUsername());
+             //   boolean1 = true;
+                return true;
+            }
+        }
+
+     //   return boolean1;
+    return false;
+    }
+
 
     public ArrayList<account> pull_accounts() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -58,7 +118,9 @@ public class sqlsportbot {
         ResultSet rs = preparedStatement.executeQuery();
         while (
                 rs.next()) {
-            resultHolder.add(new account(rs.getString("username"), rs.getString("email"), rs.getString("status"), rs.getString("password")));
+            resultHolder.add(new account(rs.getString("username"),
+                    rs.getString("email"), rs.getString("status"),
+                    rs.getString("password"), rs.getInt("lastgameid")));
         }
         conn.close();
         return resultHolder;
