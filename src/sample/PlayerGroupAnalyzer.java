@@ -5,12 +5,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PlayerGroupAnalyzer {
     int score = 0;
     int time = 0;
     int incrementor = 1;
     HashMap<String, Player> playerHashMap = new HashMap<>();
+    HashMap<String, ArrayList<HashMap<String, Player>>> eternal_sliced_hashmaps = new HashMap<>();
+    HashMap<Integer, HashMap<String, ArrayList<event>>> QuadrantEvents;
 
 
     public Boolean SwitchCheck(ArrayList<event> eventArrayList, int gorillaposition) {
@@ -18,11 +21,21 @@ public class PlayerGroupAnalyzer {
                 || (eventArrayList.get(gorillaposition).getDescription().equals("Ingresso")));
     }
 
+
     public JSONArray getJsonInQuadrants
-            (HashMap<Integer, HashMap<String, ArrayList<ArrayList<event>>>> input) {
+            (HashMap<Integer, HashMap<String, ArrayList<ArrayList<event>>>> input
+                    , HashMap<Integer, HashMap<String, ArrayList<event>>> unfilteredEvents) {
         // input is all quadrants and all both teams
+        setQuadrantEvents(unfilteredEvents);
         ArrayList<String> teamnames = new ArrayList<>();
-        input.get(1).forEach((key, value) -> {teamnames.add(key);});
+        input.get(1).forEach((key, value) -> {
+            teamnames.add(key);
+        });
+
+        eternal_sliced_hashmaps.put(teamnames.get(1), new ArrayList<>());
+        eternal_sliced_hashmaps.put(teamnames.get(0), new ArrayList<>());
+
+
         HashMap<String, ArrayList<ArrayList<event>>> quadrant1 = input.get(1);
         HashMap<String, ArrayList<ArrayList<event>>> quadrant2 = input.get(2);
         HashMap<String, ArrayList<ArrayList<event>>> quadrant3 = input.get(3);
@@ -33,11 +46,11 @@ public class PlayerGroupAnalyzer {
         quadrants.add(quadrant3);
         quadrants.add(quadrant4);
 
-    // the phantom seven bug happens before this because it isn't present in the array
-    //   int size = quadrant1.get("GeVi Napoli Basket").size();
-    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getPlayer());
-    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getTime());
-    //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getDescription());
+        // the phantom seven bug happens before this because it isn't present in the array
+        //   int size = quadrant1.get("GeVi Napoli Basket").size();
+        //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getPlayer());
+        //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getTime());
+        //   System.out.println(quadrant1.get("GeVi Napoli Basket").get(size-1).get(1).getDescription());
 
 
         JSONArray finalproduct = new JSONArray();
@@ -73,9 +86,7 @@ public class PlayerGroupAnalyzer {
             //    if (quadrantNumba == 1 && i == 0) {
             sliceToHashMap(everyevent.get(i));
             //    }
-
-            JSONObject squeezedHashmap = squeezeResultsFromHashMap(quadrantNumba);
-
+            JSONObject squeezedHashmap = squeezeResultsFromHashMap();
             //    if (i > 0) {
             //        sliceToHashMap(everyevent.get(i));
             //    }
@@ -107,7 +118,7 @@ public class PlayerGroupAnalyzer {
     }
 
     // returns a JSON array of a single slice
-    public JSONObject squeezeResultsFromHashMap(int quadrantNumba) {
+    public JSONObject squeezeResultsFromHashMap() {
 
         JSONObject slicedHolder = new JSONObject();
         slicedHolder.put("time", playerHashMap.get("time").getPlaytime());
@@ -147,8 +158,62 @@ public class PlayerGroupAnalyzer {
         return slicedHolder;
     }
 
-    public void sliceToHashMap
-            (ArrayList<event> slice) {
+    public Boolean issbagliato(
+            String[] sbagliatoHideout
+    ) {
+        for (int i = 0; i < sbagliatoHideout.length; i++) {
+            if (sbagliatoHideout[i].equals("sbagliato")) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    public int get_opposing_team_score_during_interval
+            (int start, int end, String ourteam, int Quadrant) {
+        HashMap<String, ArrayList<event>> quadrant = QuadrantEvents.get(Quadrant);
+        HashMap<String, ArrayList<event>> copyquadrant = new HashMap<>();
+        copyquadrant.putAll(quadrant);
+        copyquadrant.remove(ourteam);
+        ArrayList<String> enemyname = new ArrayList<>();
+        copyquadrant.forEach((key, value) -> {
+
+            enemyname.add(key);
+
+        });
+        ArrayList<event> enemyevents = copyquadrant.get(enemyname.get(0));
+
+        System.out.println(enemyname.get(0));
+        System.out.println(ourteam);
+
+        int enemypoints = 0;
+        for (int i = 0; i < enemyevents.size(); i++) {
+
+            if (enemyevents.get(i).getIndex() > start && enemyevents.get(i).getIndex() < end) {
+
+                if (enemyevents.get(i).description.equals("Tiro libero segnato")) {
+                    enemypoints = enemypoints + 1;
+                }
+
+
+                String[] scorecheck = enemyevents.get(i).description.split(" ");
+                if (scorecheck.length > 1) {
+                    if (scorecheck[1].equals("punti")) {
+                        if (!issbagliato(scorecheck)) {
+                            enemypoints = enemypoints + Integer.parseInt(scorecheck[0]);
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return enemypoints;
+    }
+
+    public void sliceToHashMap(ArrayList<event> slice) {
 
         Player ignorestatus = new Player(0, 0, "ignore");
         if (slice.get(1).getDescription().equals("Uscita") || slice.get(1).getDescription().equals("Ingresso")) {
@@ -156,19 +221,21 @@ public class PlayerGroupAnalyzer {
             //        System.out.println("block inserted");
         }
 
-      //  if (slice.get(0).getPlayer().equals("Elijah Stewart") &&
-      //      slice.get(0).getDescription().equals("3 punti sbagliato")
-      //   && slice.get(0).getTime().equals("00:00")
+        //  if (slice.get(0).getPlayer().equals("Elijah Stewart") &&
+        //      slice.get(0).getDescription().equals("3 punti sbagliato")
+        //   && slice.get(0).getTime().equals("00:00")
 //
-      //  ) {
-      //      System.out.println("Cha Ching");
-      //  }
+        //  ) {
+        //      System.out.println("Cha Ching");
+        //  }
 
         twoitemholder twoitemholder = new twoitemholder();
         twoitemholder.setStart(slice.get(0).getTime());
         twoitemholder.setEnd(slice.get(slice.size() - 1).getTime());
         int letime = getDeltaTime(twoitemholder.getStart(), twoitemholder.getEnd());
         if (SwitchCheck(slice, 0) && SwitchCheck(slice, 1)) {
+
+
             for (int i = 0; i < slice.size(); i++) {
                 //  System.out.println("Gorilla position");
                 if (slice.get(i).getDescription().equals("Uscita")) {
@@ -183,7 +250,13 @@ public class PlayerGroupAnalyzer {
             }
         }
 
+
         if (letime > 0) {
+            int enemyscore = get_opposing_team_score_during_interval(slice.get(1).getIndex(), slice.get(slice.size() - 2).getIndex(),
+                    slice.get(1).getTeamname(), slice.get(1).getQuadrant());
+            Player score = new Player(enemyscore, 1, "Enemy Score");
+            playerHashMap.put("enemyscore", score);
+
             for (int i = 0; i < slice.size(); i++) {
                 if (!slice.get(i).getPlayer().equals("placeholder") &&
                         !slice.get(i).getPlayer().equals("placeholder placeholder") && !SwitchCheck(slice, i)) {
@@ -213,12 +286,11 @@ public class PlayerGroupAnalyzer {
             // I forgot how to make an object to hold the time so this is a workaround
             Player actuallytime = new Player(0, letime / 60, "time");
 
-            if (letime / 60 == 0) {
-                actuallytime.setPlaytime(1);
-            }
+            if (letime / 60 == 0) {actuallytime.setPlaytime(1);}
+        playerHashMap.put("time", actuallytime);}
 
-            playerHashMap.put("time", actuallytime);
-        }
+        String teamname = slice.get(1).getTeamname();
+        eternal_sliced_hashmaps.get(teamname).add(playerHashMap);
     }
 
 
@@ -243,6 +315,29 @@ public class PlayerGroupAnalyzer {
         return delta1;
     }
 
+    public int getIncrementor() {
+        return incrementor;
+    }
+
+    public void setIncrementor(int incrementor) {
+        this.incrementor = incrementor;
+    }
+
+    public HashMap<String, Player> getPlayerHashMap() {
+        return playerHashMap;
+    }
+
+    public void setPlayerHashMap(HashMap<String, Player> playerHashMap) {
+        this.playerHashMap = playerHashMap;
+    }
+
+    public HashMap<Integer, HashMap<String, ArrayList<event>>> getQuadrantEvents() {
+        return QuadrantEvents;
+    }
+
+    public void setQuadrantEvents(HashMap<Integer, HashMap<String, ArrayList<event>>> quadrantEvents) {
+        QuadrantEvents = quadrantEvents;
+    }
 
     public PlayerGroupAnalyzer() {
     }

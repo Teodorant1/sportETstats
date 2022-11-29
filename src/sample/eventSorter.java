@@ -22,7 +22,7 @@ public class eventSorter {
         JSONObject jsonObject1 = new JSONObject(matchQuadrant);
         JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
         JSONArray jsonArray = jsonObject2.getJSONArray("pbp");
-        ArrayList<event> events = jsontoarraylist(jsonArray);
+        ArrayList<event> events = jsontoarraylist(jsonArray , quadrantID );
 
         events1.addAll(events);
 
@@ -76,7 +76,7 @@ public class eventSorter {
         return QuadrantTeamslices;
     }
 
-    public ArrayList<event> jsontoarraylist(JSONArray jsonArray) {
+    public ArrayList<event> jsontoarraylist(JSONArray jsonArray , int quadrant ) {
         ArrayList<event> events0 = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -87,7 +87,9 @@ public class eventSorter {
                                 jsonObject.optString("player_surname", "placeholder"),
                                 jsonObject.optString("description", "placeholder"),
                                 jsonObject.optString("print_time", "placeholder"),
-                                jsonObject.optString("team_name", "placeholder"));
+                                jsonObject.optString("team_name", "placeholder"),
+                                i , quadrant
+                        );
 
 
                 //    if (event.getPlayer().equals("Jordan Howard") && event.getTime().equals("00:07") && event.getDescription().equals("Ingresso")) {
@@ -222,13 +224,13 @@ public class eventSorter {
 // size  1 2 3 4 5 6 7 8 9 10
 
     // the phantom 7 bug happens before here, the event is'nt present in the array list
-    public void RetconPlayerExistence(ArrayList<ArrayList<event>> teamSlices, String retconPlayer) {
-        for (int i = 0; i < teamSlices.size(); i++) {
-            String teamname = teamSlices.get(0).get(1).getTeamname();
-            event retcon = new event(retconPlayer, "retcon", "5:00", teamname);
-            teamSlices.get(i).add(1, retcon);
-        }
-    }
+    //   public void RetconPlayerExistence(ArrayList<ArrayList<event>> teamSlices, String retconPlayer) {
+    //       for (int i = 0; i < teamSlices.size(); i++) {
+    //           String teamname = teamSlices.get(0).get(1).getTeamname();
+    //           event retcon = new event(retconPlayer, "retcon", "5:00", teamname);
+    //           teamSlices.get(i).add(1, retcon);
+    //       }
+    //   }
 
     // 1 2 3 4 5
     // i = 4
@@ -244,11 +246,10 @@ public class eventSorter {
     }
 
     public ArrayList<ArrayList<event>> createSlices(ArrayList<event> eventArrayList) {
-     // ArrayList<String> PresentPlayers = new ArrayList<>();
+        // ArrayList<String> PresentPlayers = new ArrayList<>();
         ArrayList<ArrayList<event>> teamSlices = new ArrayList<>();
         ArrayList<event> slices = new ArrayList<>();
         for (int i = 0; i < eventArrayList.size(); i++) {
-
 
 
             //    if (i > 0 && !PresentPlayers.contains(eventArrayList.get(i).getPlayer())
@@ -260,10 +261,10 @@ public class eventSorter {
             // checks for switch
             if (SwitchCheck(eventArrayList, i)) {
 
-            //    if (i > 0 && isPresentAtStart(eventArrayList, i, eventArrayList.get(i).getPlayer())
-            //            &&  eventArrayList.get(i).getDescription().equals("Uscita")  ) {
-            //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
-            //    }
+                //    if (i > 0 && isPresentAtStart(eventArrayList, i, eventArrayList.get(i).getPlayer())
+                //            &&  eventArrayList.get(i).getDescription().equals("Uscita")  ) {
+                //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
+                //    }
 
                 // checks if it's the very last one
                 if (i == eventArrayList.size() - 1) {

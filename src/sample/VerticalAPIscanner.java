@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class VerticalAPIscanner {
 
     public String maintest(String gameID) throws IOException {
-    //23736
+        //23736
         httpfetch httpfetch = new httpfetch();
         Match match = httpfetch.bigFetch(gameID);
 
@@ -22,9 +22,11 @@ public class VerticalAPIscanner {
                 = eventSorter.getTeamSlices();
 
 
-
-        JSONArray jsonArray = playerGroupAnalyzer.getJsonInQuadrants(TeamEvents);
-    //  System.out.println(jsonArray);
+        JSONArray jsonArray
+                = playerGroupAnalyzer
+                .getJsonInQuadrants(TeamEvents, eventSorter.QuadrantEvents);
+        //  System.out.println(jsonArray);
         return jsonArray.toString();
 
-    }}
+    }
+}
