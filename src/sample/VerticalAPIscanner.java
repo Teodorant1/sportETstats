@@ -8,13 +8,15 @@ import java.util.HashMap;
 
 public class VerticalAPIscanner {
 
+
+    PlayerGroupAnalyzer playerGroupAnalyzer = new PlayerGroupAnalyzer();
+
+
     public String maintest(String gameID) throws IOException {
         //23736
         httpfetch httpfetch = new httpfetch();
         Match match = httpfetch.bigFetch(gameID);
 
-
-        PlayerGroupAnalyzer playerGroupAnalyzer = new PlayerGroupAnalyzer();
 
         eventSorter eventSorter = new eventSorter(match);
 
@@ -28,5 +30,13 @@ public class VerticalAPIscanner {
         //  System.out.println(jsonArray);
         return jsonArray.toString();
 
+    }
+
+    public PlayerGroupAnalyzer getPlayerGroupAnalyzer() {
+        return playerGroupAnalyzer;
+    }
+
+    public void setPlayerGroupAnalyzer(PlayerGroupAnalyzer playerGroupAnalyzer) {
+        this.playerGroupAnalyzer = playerGroupAnalyzer;
     }
 }

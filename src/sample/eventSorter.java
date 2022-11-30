@@ -92,11 +92,6 @@ public class eventSorter {
                         );
 
 
-                //    if (event.getPlayer().equals("Jordan Howard") && event.getTime().equals("00:07") && event.getDescription().equals("Ingresso")) {
-                //        System.out.println(events0.get(events0.size() - 1).getPlayer());
-                //        System.out.println(events0.get(events0.size() - 1).getTime());
-                //        System.out.println(events0.get(events0.size() - 1).getDescription());
-                //    }
 
 
                 String[] scorecheck = event.description.split(" ");
@@ -146,26 +141,12 @@ public class eventSorter {
         HashMap<String, ArrayList<event>> teamevents = new HashMap<>();
         ArrayList<event> team1events = new ArrayList<>();
         ArrayList<event> team2events = new ArrayList<>();
-
-// the phantom seven happens after this because it is present in events1 arraylist here
-        //      if (quadrantID == 1) {
-        //          System.out.println(events1.get(events1.size() - 2).getPlayer());
-        //          System.out.println(events1.get(events1.size() - 2).getDescription());
-        //          System.out.println(events1.get(events1.size() - 2).getTime());
-        //          System.out.println(events1.get(events1.size() - 2).getTeamname());
-        //      }
-
-
-        //5 1 2 3 4 5
-        //  0 1 2 3 4
-
         for (int i = 0; i < events1.size(); i++) {
             if (!events1.get(i).teamname.equals("placeholder")) {
 
 
                 if (team1events.size() == 0 && team2events.size() == 0) {
                     team1events.add(events1.get(i));
-                    //    teamevents.put(events1.get(i).getTeamname(), team1events);
                 }
                 if (team1events.size() > 0 && i > 0) {
                     if (events1.get(i).teamname.equals(team1events.get(0).getTeamname())) {
@@ -181,24 +162,8 @@ public class eventSorter {
 
         String teamname1 = team1events.get(0).getTeamname();
         String teamname2 = team2events.get(0).getTeamname();
-
-
-        //   if (quadrantID == 1) {
-        //       System.out.println(team2events.get(team2events.size() - 1).getPlayer());
-        //       System.out.println(team2events.get(team2events.size() - 1).getTime());
-        //       System.out.println(team2events.get(team2events.size()-1).getDescription());
-        //   }
-
-
         teamevents.put(teamname1, team1events);
         teamevents.put(teamname2, team2events);
-
-        //   if (quadrantID == 1) {
-        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getPlayer());
-        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getDescription());
-        //       System.out.println(teamevents.get(teamname2).get(teamevents.get(teamname2).size() - 1).getTime());
-        //   }
-
         return teamevents;
     }
 
@@ -207,33 +172,7 @@ public class eventSorter {
                 (eventArrayList.get(gorillaposition).getDescription().equals("Ingresso")));
     }
 
-//   public Boolean endofSwitchCheck(ArrayList<event> eventArrayList, int gorillaposition) {
-//
-//
-//       //8+1=9                           10
-//       if (gorillaposition + 1 < eventArrayList.size())
-//       {return (!eventArrayList.get(gorillaposition + 1).getDescription().equals("Uscita") && !eventArrayList.get(gorillaposition + 1).getDescription().equals("Ingresso"));}
-//       return false;}
 
-    // q2 Switch action action switch action action switch EMPTYAction
-
-
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//   1 2 3 4 5 6 7 8 9 10
-// index 0 1 2 3 4 5 6 7 8 9
-// size  1 2 3 4 5 6 7 8 9 10
-
-    // the phantom 7 bug happens before here, the event is'nt present in the array list
-    //   public void RetconPlayerExistence(ArrayList<ArrayList<event>> teamSlices, String retconPlayer) {
-    //       for (int i = 0; i < teamSlices.size(); i++) {
-    //           String teamname = teamSlices.get(0).get(1).getTeamname();
-    //           event retcon = new event(retconPlayer, "retcon", "5:00", teamname);
-    //           teamSlices.get(i).add(1, retcon);
-    //       }
-    //   }
-
-    // 1 2 3 4 5
-    // i = 4
     public Boolean isPresentAtStart(ArrayList<event> eventArrayList, int index, String playername) {
         for (int i = 0; i < index; i++) {
             if (eventArrayList.get(i).getDescription().equals("Ingresso") && eventArrayList.get(i).getPlayer().equals(playername)) {
@@ -246,27 +185,11 @@ public class eventSorter {
     }
 
     public ArrayList<ArrayList<event>> createSlices(ArrayList<event> eventArrayList) {
-        // ArrayList<String> PresentPlayers = new ArrayList<>();
         ArrayList<ArrayList<event>> teamSlices = new ArrayList<>();
         ArrayList<event> slices = new ArrayList<>();
         for (int i = 0; i < eventArrayList.size(); i++) {
 
-
-            //    if (i > 0 && !PresentPlayers.contains(eventArrayList.get(i).getPlayer())
-            //            && !eventArrayList.get(i).getDescription().equals("Ingresso")) {
-            //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
-            //    }
-            //    PresentPlayers.add(eventArrayList.get(i).getTeamname());
-
-            // checks for switch
             if (SwitchCheck(eventArrayList, i)) {
-
-                //    if (i > 0 && isPresentAtStart(eventArrayList, i, eventArrayList.get(i).getPlayer())
-                //            &&  eventArrayList.get(i).getDescription().equals("Uscita")  ) {
-                //        RetconPlayerExistence(teamSlices, eventArrayList.get(i).getPlayer());
-                //    }
-
-                // checks if it's the very last one
                 if (i == eventArrayList.size() - 1) {
                     slices.add(eventArrayList.get(i));
                     ArrayList<event> copiedslices = new ArrayList<>();
@@ -307,13 +230,11 @@ public class eventSorter {
                     if (SwitchCheck(eventArrayList, i + 1)) {
                         switched = true;
                         ArrayList<event> copiedslices = new ArrayList<>();
-
                         slices.add(eventArrayList.get(i));
                         event event3 = new event();
                         event3.setDescription("stop");
                         event3.setTime(eventArrayList.get(i + 1).getTime());
                         slices.add(event3);
-
                         copiedslices.addAll(slices);
                         teamSlices.add(copiedslices);
                         slices.clear();
@@ -327,12 +248,7 @@ public class eventSorter {
                 }
 
                 if ((i == eventArrayList.size() - 1)) {
-                    // the phantom 7 bug happens before here, the event is'nt present after this
-                    //     if (  eventArrayList.get(i).getTime().equals("00:00")) {
-                    //         System.out.println(eventArrayList.get(i).getPlayer());
-                    //         System.out.println(eventArrayList.get(i).getDescription());
-                    //         System.out.println(eventArrayList.get(i).getTime());
-                    //     }
+
 
                     if (SwitchCheck(eventArrayList, i - 1)) {
 
@@ -377,27 +293,6 @@ public class eventSorter {
         }
         return teamSlices;
     }
-
-    //  public JSONArray getQuadrantFromMatch(String matchQuadrant) {
-    //      JSONObject jsonObject1 = new JSONObject(matchQuadrant);
-    //      JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
-    //      JSONArray jsonArray1 = jsonObject2.getJSONArray("pbp");
-    //      return jsonArray1;
-    //  }
-
-    //   public ArrayList<JSONArray> getjsonARRAYSfromMatch(Match match) {
-    //       ArrayList<JSONArray> jsonArrays = new ArrayList<>();
-    //       JSONArray jsonArray1 = getQuadrantFromMatch(match.q1);
-    //       JSONArray jsonArray2 = getQuadrantFromMatch(match.q2);
-    //       JSONArray jsonArray3 = getQuadrantFromMatch(match.q3);
-    //       JSONArray jsonArray4 = getQuadrantFromMatch(match.q4);
-    //       jsonArrays.add(jsonArray1);
-    //       jsonArrays.add(jsonArray2);
-    //       jsonArrays.add(jsonArray3);
-    //       jsonArrays.add(jsonArray4);
-    //       return jsonArrays;
-    //   }
-
 
     public Match getMatch1() {
         return match1;

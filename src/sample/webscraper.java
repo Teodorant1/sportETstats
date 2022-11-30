@@ -1,6 +1,5 @@
 package sample;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,7 +41,7 @@ public class webscraper {
                  // System.out.println(year);
                     if (year.equals("2022") && !score.equals("0 - 0"))
                     {teamEndpoints.add(gameID);
-                    System.out.println(gameID);
+                  //  System.out.println(gameID);
                     }}
 
 
@@ -54,7 +53,7 @@ public class webscraper {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    System.out.println(teamEndpoints);
+//    System.out.println(teamEndpoints);
     }
 
     public ArrayList<String> getTeamEndpoints() {

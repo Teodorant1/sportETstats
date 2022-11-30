@@ -122,30 +122,19 @@ public class PlayerGroupAnalyzer {
 
         JSONObject slicedHolder = new JSONObject();
         slicedHolder.put("time", playerHashMap.get("time").getPlaytime());
-        // if (quadrantNumba == 1) {
-        //     playerHashMap.forEach((key, value) -> {
-        //         System.out.println(key);
-        //     });
-        //     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");}
-
 
         JSONArray slicedJson = new JSONArray();
         playerHashMap.forEach((key, value) -> {
+            if (!key.equals("time") && (!key.equals("score")))
+            {slicedJson.put(value.getOverview());}});
 
-            if (!key.equals("time") && (!key.equals("score"))) {
-                slicedJson.put(value.getOverview());
-            }
-            //  if (playerHashMap.size() < 5) {
-            //      System.out.println("Size is smaller than 5");
-            //  }
-
-        });
         HashMap<String, Player> playerHashMap2 = new HashMap<>();
         playerHashMap2.putAll(playerHashMap);
         ArrayList<Integer> playerscores = new ArrayList<>();
         playerHashMap2.forEach((key, value) -> {
             playerscores.add(value.getPersonalscore());
         });
+
         int teampoints = 0;
         for (int n = 0; n < playerscores.size(); n++) {
             teampoints = teampoints + playerscores.get(n);
@@ -184,8 +173,8 @@ public class PlayerGroupAnalyzer {
         });
         ArrayList<event> enemyevents = copyquadrant.get(enemyname.get(0));
 
-        System.out.println(enemyname.get(0));
-        System.out.println(ourteam);
+    //    System.out.println(enemyname.get(0));
+    //    System.out.println(ourteam);
 
         int enemypoints = 0;
         for (int i = 0; i < enemyevents.size(); i++) {
