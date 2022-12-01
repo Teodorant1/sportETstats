@@ -206,6 +206,7 @@ public class eventSorter {
                     event event1 = new event();
                     event1.setDescription("start");
                     event1.setTime("10:00");
+                    event1.setTeamname(eventArrayList.get(i).getTeamname());
                     slices.add(event1);
                     slices.add(eventArrayList.get(i));
                 }
@@ -223,6 +224,8 @@ public class eventSorter {
                         event event2 = new event();
                         event2.setDescription("start");
                         event2.setTime(eventArrayList.get(i - 1).getTime());
+                        event2.setTeamname(eventArrayList.get(i).getTeamname());
+
                         slices.add(event2);
                         slices.add(eventArrayList.get(i));
                     }
@@ -262,6 +265,7 @@ public class eventSorter {
                         event start = new event();
                         start.setDescription("start");
                         start.setTime(eventArrayList.get(i - 1).getTime());
+                        start.setTeamname(eventArrayList.get(i-1).getTeamname());
 
                         event stop = new event();
                         stop.setDescription("stop");

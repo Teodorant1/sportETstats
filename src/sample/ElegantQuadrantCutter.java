@@ -27,6 +27,8 @@ public class ElegantQuadrantCutter {
         newquad.put("timeline", timeline);
         newquad.put("teamname", teamname);
 
+    //  System.out.println(newquad);
+
         return newquad;
 
     }

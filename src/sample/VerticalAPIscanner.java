@@ -16,8 +16,6 @@ public class VerticalAPIscanner {
         //23736
         httpfetch httpfetch = new httpfetch();
         Match match = httpfetch.bigFetch(gameID);
-
-
         eventSorter eventSorter = new eventSorter(match);
 
         HashMap<Integer, HashMap<String, ArrayList<ArrayList<event>>>> TeamEvents

@@ -12,6 +12,16 @@ public class PlayerGroupAnalyzer {
     int time = 0;
     int incrementor = 1;
     HashMap<String, Player> playerHashMap = new HashMap<>();
+
+    public HashMap<String, ArrayList<HashMap<String, Player>>> getEternal_sliced_hashmaps() {
+        System.out.println("We are fetching this : "+eternal_sliced_hashmaps);
+        return eternal_sliced_hashmaps;
+    }
+
+    public void setEternal_sliced_hashmaps(HashMap<String, ArrayList<HashMap<String, Player>>> eternal_sliced_hashmaps) {
+        this.eternal_sliced_hashmaps = eternal_sliced_hashmaps;
+    }
+
     HashMap<String, ArrayList<HashMap<String, Player>>> eternal_sliced_hashmaps = new HashMap<>();
     HashMap<Integer, HashMap<String, ArrayList<event>>> QuadrantEvents;
 
@@ -125,7 +135,7 @@ public class PlayerGroupAnalyzer {
 
         JSONArray slicedJson = new JSONArray();
         playerHashMap.forEach((key, value) -> {
-            if (!key.equals("time") && (!key.equals("score")))
+            if (!key.equals("time") && (!key.equals("enemyscore")))
             {slicedJson.put(value.getOverview());}});
 
         HashMap<String, Player> playerHashMap2 = new HashMap<>();
@@ -141,6 +151,7 @@ public class PlayerGroupAnalyzer {
         }
         slicedHolder.put("score", teampoints);
 
+        slicedHolder.put("enemyscore",playerHashMap.get("enemyscore").getPersonalscore());
 
         slicedHolder.put("slice", slicedJson);
         //    System.out.println(" squeezeResultsFromHashMap "+slicedJson);
@@ -205,7 +216,10 @@ public class PlayerGroupAnalyzer {
     public void sliceToHashMap(ArrayList<event> slice) {
 
         Player ignorestatus = new Player(0, 0, "ignore");
-        if (slice.get(1).getDescription().equals("Uscita") || slice.get(1).getDescription().equals("Ingresso")) {
+     // System.out.println(slice.get(0).getDescription());
+     // System.out.println(slice.get(0).getPlayer());
+     // System.out.println(slice.get(0).getTeamname());
+        if (slice.get(0).getDescription().equals("Uscita") || slice.get(0).getDescription().equals("Ingresso")) {
             playerHashMap.put("ignorestatus", ignorestatus);
             //        System.out.println("block inserted");
         }
@@ -222,7 +236,7 @@ public class PlayerGroupAnalyzer {
         twoitemholder.setStart(slice.get(0).getTime());
         twoitemholder.setEnd(slice.get(slice.size() - 1).getTime());
         int letime = getDeltaTime(twoitemholder.getStart(), twoitemholder.getEnd());
-        if (SwitchCheck(slice, 0) && SwitchCheck(slice, 1)) {
+        if (SwitchCheck(slice, 0) && SwitchCheck(slice, slice.size()-1)) {
 
 
             for (int i = 0; i < slice.size(); i++) {
@@ -278,8 +292,9 @@ public class PlayerGroupAnalyzer {
             if (letime / 60 == 0) {actuallytime.setPlaytime(1);}
         playerHashMap.put("time", actuallytime);}
 
-        String teamname = slice.get(1).getTeamname();
+        String teamname = slice.get(0).getTeamname();
         eternal_sliced_hashmaps.get(teamname).add(playerHashMap);
+    //    System.out.println("PlayerHashMap be like : "+playerHashMap);
     }
 
 

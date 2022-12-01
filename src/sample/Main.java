@@ -18,27 +18,33 @@ public class Main {
         //   verticalAPIscanner.maintest("23740");
 
 
-        ArrayList <String> num1 = new ArrayList<>();
-        ArrayList <String> num2 = new ArrayList<>();
+     //  ArrayList <String> num1 = new ArrayList<>();
+     //  ArrayList <String> num2 = new ArrayList<>();
 
-        num1.add("Donald Trump");
-        num1.add("Desantis");
-        num1.add("Mike Pence");
-        num1.add("Nick Fuentes");
+     //  num1.add("Donald Trump");
+     //  num1.add("Desantis");
+     //  num1.add("Mike Pence");
+     //  num1.add("Nick Fuentes");
 
-        num2.add("Bernie Sanders");
-        num2.add("Joe Biden");
-        num2.add("Andrew Yang");
-        num2.add("Steven Bonell");
+     //  num2.add("Bernie Sanders");
+     //  num2.add("Joe Biden");
+     //  num2.add("Andrew Yang");
+     //  num2.add("Steven Bonell");
 
 
-        Collections.sort(num1);
-        Collections.sort(num2);
+     //  Collections.sort(num1);
+     //  Collections.sort(num2);
 
-        System.out.println(num1);
-        System.out.println(num2);
+     //  System.out.println(num1);
+     //  System.out.println(num2);
 
-        System.out.println(num1.equals(num2));
+     //  System.out.println(num1.equals(num2));
+
+       yearly_reporter yearly_reporter = new yearly_reporter();
+       yearly_reporter.maintest();
+
+       VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
+       verticalAPIscanner.maintest("23726");
 
         gameIDserver gameIDserver = new gameIDserver();
         gameIDserver.launch();
