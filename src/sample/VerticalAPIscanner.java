@@ -26,6 +26,8 @@ public class VerticalAPIscanner {
                 = playerGroupAnalyzer
                 .getJsonInQuadrants(TeamEvents, eventSorter.QuadrantEvents);
         //  System.out.println(jsonArray);
+        //  System.out.println( " $$$$$$$$$$$$$$$ " + playerGroupAnalyzer.eternal_sliced_hashmaps);
+
         return jsonArray.toString();
 
     }
