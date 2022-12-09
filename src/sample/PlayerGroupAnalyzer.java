@@ -123,32 +123,48 @@ public class PlayerGroupAnalyzer {
     public JSONObject squeezeResultsFromHashMap() {
 
         JSONObject slicedHolder = new JSONObject();
-        slicedHolder.put("time", playerHashMap.get("time").getPlaytime());
+        try {
+            slicedHolder.put("time", playerHashMap.get("time").getPlaytime());
 
-        JSONArray slicedJson = new JSONArray();
-        playerHashMap.forEach((key, value) -> {
-            if (!key.equals("time") && (!key.equals("enemyscore"))) {
-                slicedJson.put(value.getOverview());
+            JSONArray slicedJson = new JSONArray();
+            playerHashMap.forEach((key, value) -> {
+                if (!key.equals("time") && (!key.equals("enemyscore"))) {
+                    slicedJson.put(value.getOverview());
+                }
+            });
+
+            HashMap<String, Player> playerHashMap2 = new HashMap<>();
+            playerHashMap2.putAll(playerHashMap);
+            ArrayList<Integer> playerscores = new ArrayList<>();
+            playerHashMap2.forEach((key, value) -> {
+
+                if (!key.equals("enemyscore") && !key.equals("time")) {
+                    playerscores.add(value.getPersonalscore());
+                }
+            });
+
+            int teampoints = 0;
+            for (int n = 0; n < playerscores.size(); n++) {
+                teampoints = teampoints + playerscores.get(n);
             }
-        });
+            slicedHolder.put("score", teampoints);
 
-        HashMap<String, Player> playerHashMap2 = new HashMap<>();
-        playerHashMap2.putAll(playerHashMap);
-        ArrayList<Integer> playerscores = new ArrayList<>();
-        playerHashMap2.forEach((key, value) -> {
-            playerscores.add(value.getPersonalscore());
-        });
+            slicedHolder.put("enemyscore", playerHashMap.get("enemyscore").getPersonalscore());
 
-        int teampoints = 0;
-        for (int n = 0; n < playerscores.size(); n++) {
-            teampoints = teampoints + playerscores.get(n);
+            slicedHolder.put("slice", slicedJson);
+            if (!playerHashMap2.containsKey("ignorestatus")) {
+                System.out.println(slicedJson);
+                System.out.println("enemyscore "+playerHashMap.get("enemyscore").getPersonalscore());
+                System.out.println("Teampoints "+teampoints);
+            }
+        } catch (Exception e) {
+            System.out.println("Repeated with many repercussions");
         }
-        slicedHolder.put("score", teampoints);
 
-        slicedHolder.put("enemyscore", playerHashMap.get("enemyscore").getPersonalscore());
 
-        slicedHolder.put("slice", slicedJson);
         //    System.out.println(" squeezeResultsFromHashMap "+slicedJson);
+
+
         return slicedHolder;
     }
 
@@ -292,14 +308,14 @@ public class PlayerGroupAnalyzer {
 
         String teamname = slice.get(0).getTeamname();
 
-    //    System.out.println("Teamname be like : "+teamname);
+        //    System.out.println("Teamname be like : "+teamname);
         HashMap<String, Player> copyhashmap = new HashMap<>();
         copyhashmap.putAll(playerHashMap);
 
 
         eternal_sliced_hashmaps.get(teamname).add(copyhashmap);
 
-    //    System.out.println(eternal_sliced_hashmaps.get(teamname));
+        //    System.out.println(eternal_sliced_hashmaps.get(teamname));
 
         //    System.out.println("PlayerHashMap be likee : "+playerHashMap);
     }

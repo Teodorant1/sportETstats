@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -21,12 +22,15 @@ public class Main {
         //    VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
         //    verticalAPIscanner.maintest("23726");
 
-     //  sqlsportbot sqlsportbot = new sqlsportbot();
-     //  sqlsportbot.insert_account("marcopolo", "marcopolo@gmail.com",
-     //          "bossman", "marcopolo", 23726);
+       //     sqlsportbot sqlsportbot = new sqlsportbot();
+       //     sqlsportbot.insert_account("marcopolo", "marcopolo@gmail.com",
+       //     "bossman", "marcopolo", 23726);
 
         // yearlyreporterHandler yearlyreporterHandler = new yearlyreporterHandler();
         // yearlyreporterHandler.handlerequest("{teamname:NutriBullet Treviso Basket, url:1542}");
+
+
+
 
         gameIDserver gameIDserver = new gameIDserver();
         gameIDserver.launch();

@@ -58,17 +58,13 @@ public class ElegantHandler implements HttpHandler {
             //    System.out.println("OP SUCCESS");
             GameID1 = sqlsportbot.get_lastgameid(username, password);
         }
-
-        System.out.println(2);
-
-//      int GameID1 = request.getInt("gameID");
         int team = request.getInt("teamID");
         int quadrant = request.getInt("QuarterNumber");
         ElegantQuadrantCutter elegantQuadrantCutter = new ElegantQuadrantCutter();
-
-
         JSONObject theresponse = elegantQuadrantCutter.getQuadrant(quadrant, team,
                 String.valueOf(GameID1));
+
+        System.out.print(theresponse);
 
         return String.valueOf(theresponse);
     }

@@ -15,15 +15,16 @@ public class yearly_reporter {
     ArrayList<HashMap<String, Player>> team_year_slices = new ArrayList<>();
     HashMap<String, ArrayList<HashMap<String, Player>>> lineups = new HashMap<>();
     ArrayList<JSONObject> processed_lineups = new ArrayList<>();
-    public String maintest(String id1 , String teamname ) throws IOException {
 
-        String url1 = "https://www.legabasket.it/lba/squadre/2022/"+id1+"/nutribullet-treviso-basket/match_schedule";
+    public String maintest(String id1, String teamname) throws IOException {
+
+        String url1 = "https://www.legabasket.it/lba/squadre/2022/" + id1 + "/nutribullet-treviso-basket/match_schedule";
 
         //    System.out.println("paloki");
         webscraper.getPage(url1);
         ArrayList<String> teamEndpoints = webscraper.getTeamEndpoints();
-   //   analyze_team(teamEndpoints, "Openjobmetis Varese");
-    return analyze_team(teamEndpoints, teamname);
+        //   analyze_team(teamEndpoints, "Openjobmetis Varese");
+        return analyze_team(teamEndpoints, teamname);
     }
 
     public String analyze_team(ArrayList<String> teamEndpoints, String teamname) throws IOException {
@@ -49,13 +50,13 @@ public class yearly_reporter {
 // System.out.println("herp derp");
 //  System.out.println("LINEUPS : " + lineups.size());
 
-    //    JSONArray lineup_lifetime_stats = new JSONArray();
+        //    JSONArray lineup_lifetime_stats = new JSONArray();
 
         lineups.forEach((key, value) ->
         {
-         //   JSONArray players = new JSONArray(key);
-         //  System.out.println(key);
-         //  System.out.println(getAllPoints(value));
+            //   JSONArray players = new JSONArray(key);
+            //  System.out.println(key);
+            //  System.out.println(getAllPoints(value));
             getAllPoints(value);
         });
 //      System.out.println("  LINEUPS SIZE BE LIKE  "+lineups.size());
@@ -63,30 +64,56 @@ public class yearly_reporter {
         return processed_lineups.toString();
     }
 
-    public int getAllPoints(ArrayList<HashMap<String, Player>> singularLineUp) {
-        int points = 0;
-        for (int i = 0; i < singularLineUp.size(); i++) {
-            points = points + get_sum_from_PlayerHashMap(singularLineUp.get(i));
-        }
+    public void getAllPoints(ArrayList<HashMap<String, Player>> singularLineUp) {
+        //   int points = 0;
+        HashMap<String, Player> firstLineUp = singularLineUp.get(0);
+        if (!firstLineUp.containsKey("ignorestatus")) {
+            if (singularLineUp.size() > 1) {
+                for (int i = 1; i < singularLineUp.size(); i++) {
+                    singularLineUp.get(i).forEach((key, value) -> {
+                        {
+                            firstLineUp.get(key).setPlaytime(firstLineUp.get(key).getPlaytime() + value.getPlaytime());
+                            firstLineUp.get(key).setPersonalscore(firstLineUp.get(key).getPlaytime() + value.getPersonalscore());
+                        }
+                    });
+                }
+            }
+            ArrayList<String> playernames = new ArrayList<>();
+            //   if (!singularLineUp.get(0).containsKey("ignorestatus"))
 
-        ArrayList<String> playernames = new ArrayList<>();
-
-        if (!singularLineUp.get(0).containsKey("ignorestatus")) {
             singularLineUp.get(0).forEach((key, value) -> {
                 playernames.add(key);
             });
             Collections.sort(playernames);
-            //System.out.println("AASLDKJFHALSJFHASLJHALKSDJFHLKAJHSDFKHL");
+            int time = firstLineUp.get("time").getPlaytime();
+            int points = get_sum_from_PlayerHashMap(firstLineUp);
+            int enemypoints = firstLineUp.get("enemyscore").getPersonalscore();
+
             JSONObject lineup_overview = new JSONObject();
+
             lineup_overview.put("Points", points);
-            lineup_overview.put("Lineup", playernames);
+            lineup_overview.put("EnemyPoints", enemypoints);
+            lineup_overview.put("time", time);
+
+            firstLineUp.remove("time");
+            firstLineUp.remove("enemyscore");
+
+          ArrayList<Player> PlayerObjects = new ArrayList<>();
+          PlayerObjects.addAll(firstLineUp.values());
+
+          JSONArray players = new JSONArray();
+
+
+
+
+          lineup_overview.put("Lineup", playernames);
+
+
+
+
             processed_lineups.add(lineup_overview);
         }
-
-
         //   System.out.println(" First member of singular lineup be like :  "+singularLineUp.get(0));
-
-        return points;
     }
 
 
@@ -114,8 +141,8 @@ public class yearly_reporter {
 
     public String get_key_from_hashmapKEYS(HashMap<String, Player> playerHashMap) {
         ArrayList<String> keys = new ArrayList<>();
-        playerHashMap.remove("time");
-        playerHashMap.remove("enemyscore");
+        //     playerHashMap.remove("time");
+        //     playerHashMap.remove("enemyscore");
 
 
         playerHashMap.forEach((key, value) -> {

@@ -123,9 +123,9 @@ public class sqlsportbot {
       //    System.out.println(accounts.get(i).getPassword());
       //    System.out.println(accounts.get(i).getUsername());
 
-            if (Objects.equals(accounts.get(i).getPassword(), password)
+            if (accounts.get(i).getPassword().equals(password)
                     &&
-                    Objects.equals(accounts.get(i).getUsername(), username)) {
+                    accounts.get(i).getUsername().equals(username)) {
                 System.out.println(accounts.get(i).getPassword());
                 System.out.println(accounts.get(i).getUsername());
              //   boolean1 = true;
