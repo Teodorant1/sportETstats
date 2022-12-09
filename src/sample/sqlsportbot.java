@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class sqlsportbot {
-    static String USER = "root";
-    static String PASS = "root";
-    static String DB_URL = "jdbc:mysql://localhost:3306/squeekdb";
+    static String USER = "jojo";
+    static String PASS = "jojo";
+    static String DB_URL = "jdbc:mysql://localhost:3306/sportstats";
     httpfetch httpfetch1 = new httpfetch();
 
 
@@ -41,7 +41,8 @@ public class sqlsportbot {
     }
 
 
-    public void insert_account(String username, String email, String status, String password, int gameid)
+    public void insert_account(String username, String email, String status,
+                               String password, int gameid)
             throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO sportstats.accounts ( username , email , status , password , lastgameid ) VALUES ( ?, ?, ?, ? , ?)");
@@ -83,7 +84,33 @@ public class sqlsportbot {
         preparedStatement.executeUpdate();
         conn.close();
     }
+    public Boolean IsBoss(String username,
+                                    String password) throws SQLException {
+        ArrayList<account> accounts = pull_accounts();
 
+        Boolean boolean1 = false;
+
+        for (int i = 0; i < accounts.size(); i++) {
+
+            //    System.out.println(accounts.get(i).getPassword());
+            //    System.out.println(accounts.get(i).getUsername());
+
+            if (Objects.equals(accounts.get(i).getPassword(), password)
+                    &&
+                    Objects.equals(accounts.get(i).getUsername(), username)
+            && accounts.get(i).getStatus().equals("bossman")
+            )
+            {
+                System.out.println(accounts.get(i).getPassword());
+                System.out.println(accounts.get(i).getUsername());
+                //   boolean1 = true;
+                return true;
+            }
+        }
+
+        //   return boolean1;
+        return false;
+    }
 
     public Boolean IsAccountPresent(String username,
                                     String password) throws SQLException {

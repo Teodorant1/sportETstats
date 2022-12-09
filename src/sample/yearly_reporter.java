@@ -15,20 +15,18 @@ public class yearly_reporter {
     ArrayList<HashMap<String, Player>> team_year_slices = new ArrayList<>();
     HashMap<String, ArrayList<HashMap<String, Player>>> lineups = new HashMap<>();
     ArrayList<JSONObject> processed_lineups = new ArrayList<>();
-    public void maintest() throws IOException {
-        webscraper.getPage();
-        ArrayList<String> teamEndpoints = webscraper.getTeamEndpoints();
+    public String maintest(String id1 , String teamname ) throws IOException {
 
-        //  for ( int i = 0 ; i < teamEndpoints.size(); i++ )
-        //  {
-        //      if (teamEndpoints.get(i).equals("23726")) {
-        //          teamEndpoints.remove(i);
-        //      }
-        //  }
-        analyze_team(teamEndpoints, "Openjobmetis Varese");
+        String url1 = "https://www.legabasket.it/lba/squadre/2022/"+id1+"/nutribullet-treviso-basket/match_schedule";
+
+        //    System.out.println("paloki");
+        webscraper.getPage(url1);
+        ArrayList<String> teamEndpoints = webscraper.getTeamEndpoints();
+   //   analyze_team(teamEndpoints, "Openjobmetis Varese");
+    return analyze_team(teamEndpoints, teamname);
     }
 
-    public ArrayList<JSONObject> analyze_team(ArrayList<String> teamEndpoints, String teamname) throws IOException {
+    public String analyze_team(ArrayList<String> teamEndpoints, String teamname) throws IOException {
         for (int i = 0; i < teamEndpoints.size(); i++) {
             //  System.out.println(teamEndpoints.get(i));
             VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
@@ -51,7 +49,7 @@ public class yearly_reporter {
 // System.out.println("herp derp");
 //  System.out.println("LINEUPS : " + lineups.size());
 
-        JSONArray lineup_lifetime_stats = new JSONArray();
+    //    JSONArray lineup_lifetime_stats = new JSONArray();
 
         lineups.forEach((key, value) ->
         {
@@ -62,7 +60,7 @@ public class yearly_reporter {
         });
 //      System.out.println("  LINEUPS SIZE BE LIKE  "+lineups.size());
         System.out.println(processed_lineups);
-        return processed_lineups;
+        return processed_lineups.toString();
     }
 
     public int getAllPoints(ArrayList<HashMap<String, Player>> singularLineUp) {

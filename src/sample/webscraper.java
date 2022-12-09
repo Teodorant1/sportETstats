@@ -11,8 +11,8 @@ public class webscraper {
     ArrayList<String> teamEndpoints = new ArrayList();
 
     // String url, String team, int year
-    public void getPage() {
-        String url1 = "https://www.legabasket.it/lba/squadre/2022/1543/openjobmetis-varese/match_schedule";
+    public void getPage(String url1) {
+    // String url1 = "https://www.legabasket.it/lba/squadre/2022/1543/openjobmetis-varese/match_schedule";
 
 
         try {
