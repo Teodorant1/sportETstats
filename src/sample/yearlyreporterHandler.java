@@ -2,6 +2,7 @@ package sample;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,9 +53,9 @@ public class yearlyreporterHandler implements HttpHandler {
         // System.out.println(teamname);
         yearly_reporter yearly_reporter = new yearly_reporter();
 
-        String payload = yearly_reporter.maintest(String.valueOf(url), teamname);
+        JSONArray payload = yearly_reporter.maintest(String.valueOf(url), teamname);
 
-        System.out.println(payload);
-        return payload;
+       // System.out.println(payload);
+        return payload.toString();
     }
 }

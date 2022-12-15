@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class sqlsportbot {
-    static String USER = "jojo";
-    static String PASS = "jojo";
+    static String USER = "root";
+    static String PASS = "root";
     static String DB_URL = "jdbc:mysql://localhost:3306/sportstats";
     httpfetch httpfetch1 = new httpfetch();
 

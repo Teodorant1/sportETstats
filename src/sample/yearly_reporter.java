@@ -6,17 +6,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class yearly_reporter {
 
+    int incrementor = 0;
     webscraper webscraper = new webscraper();
-
     ArrayList<HashMap<String, Player>> team_year_slices = new ArrayList<>();
     HashMap<String, ArrayList<HashMap<String, Player>>> lineups = new HashMap<>();
     ArrayList<JSONObject> processed_lineups = new ArrayList<>();
 
-    public String maintest(String id1, String teamname) throws IOException {
+    public JSONArray maintest(String id1, String teamname) throws IOException {
 
         String url1 = "https://www.legabasket.it/lba/squadre/2022/" + id1 + "/nutribullet-treviso-basket/match_schedule";
 
@@ -24,10 +25,62 @@ public class yearly_reporter {
         webscraper.getPage(url1);
         ArrayList<String> teamEndpoints = webscraper.getTeamEndpoints();
         //   analyze_team(teamEndpoints, "Openjobmetis Varese");
-        return analyze_team(teamEndpoints, teamname);
+
+        ArrayList<JSONObject> lineupSlices = analyze_team(teamEndpoints, teamname);
+        JSONArray finalslices = pagify_lineups(lineupSlices);
+
+        System.out.println(finalslices);
+
+        return finalslices;
     }
 
-    public String analyze_team(ArrayList<String> teamEndpoints, String teamname) throws IOException {
+    public JSONArray pagify_lineups(ArrayList<JSONObject> lineupSlices) {
+
+        Collections.sort(lineupSlices, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject o1, JSONObject o2) {
+                return o2.getInt("Points") - o1.getInt("Points");
+            }
+        });
+
+        int pageindex = 1;
+
+        JSONArray final_array = new JSONArray();
+        ArrayList<JSONObject> sublist = new ArrayList<>();
+        for (int i = 0; i < lineupSlices.size(); i++) {
+            sublist.add(lineupSlices.get(i));
+            if (sublist.size() == 10) {
+
+                JSONObject page = new JSONObject();
+                page.put("pageindex",pageindex);
+                page.put("contents",sublist);
+
+                final_array.put(page);
+                sublist.clear();
+                pageindex++;
+                //    System.out.println("TEN SIZE");
+            }
+
+            if (i == lineupSlices.size() - 1 && (!(lineupSlices.size() % 10 == 0))) {
+                JSONObject page = new JSONObject();
+                page.put("pageindex",pageindex);
+                page.put("contents",sublist);
+
+                final_array.put(page);
+                sublist.clear();
+                pageindex++;
+
+                //   System.out.println("lAUNCHING INCOMPLETE");
+            }
+
+        }
+
+        // System.out.println(final_array.length());
+
+        return final_array;
+    }
+
+    public ArrayList<JSONObject> analyze_team(ArrayList<String> teamEndpoints, String teamname) throws IOException {
         for (int i = 0; i < teamEndpoints.size(); i++) {
             //  System.out.println(teamEndpoints.get(i));
             VerticalAPIscanner verticalAPIscanner = new VerticalAPIscanner();
@@ -60,9 +113,10 @@ public class yearly_reporter {
             getAllPoints(value);
         });
 //      System.out.println("  LINEUPS SIZE BE LIKE  "+lineups.size());
-        System.out.println(processed_lineups);
-        return processed_lineups.toString();
+        //     System.out.println(processed_lineups);
+        return processed_lineups;
     }
+
 
     public void getAllPoints(ArrayList<HashMap<String, Player>> singularLineUp) {
         //   int points = 0;
@@ -94,23 +148,24 @@ public class yearly_reporter {
             lineup_overview.put("Points", points);
             lineup_overview.put("EnemyPoints", enemypoints);
             lineup_overview.put("time", time);
-
             firstLineUp.remove("time");
             firstLineUp.remove("enemyscore");
 
-          ArrayList<Player> PlayerObjects = new ArrayList<>();
-          PlayerObjects.addAll(firstLineUp.values());
+            incrementor++;
+            lineup_overview.put("id", incrementor);
 
-          JSONArray players = new JSONArray();
+            ArrayList<Player> PlayerObjects = new ArrayList<>(firstLineUp.values());
+            JSONArray players = new JSONArray();
+            for (int i = 0; i < PlayerObjects.size(); i++) {
+                JSONObject player = new JSONObject();
+                player.put("points", PlayerObjects.get(i).getPersonalscore());
+                player.put("name", PlayerObjects.get(i).getFullname());
+                players.put(player);
+            }
 
+            //  System.out.println("Players be like "+players);
 
-
-
-          lineup_overview.put("Lineup", playernames);
-
-
-
-
+            lineup_overview.put("Lineup", players);
             processed_lineups.add(lineup_overview);
         }
         //   System.out.println(" First member of singular lineup be like :  "+singularLineUp.get(0));

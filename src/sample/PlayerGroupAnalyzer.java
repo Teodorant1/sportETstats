@@ -122,49 +122,43 @@ public class PlayerGroupAnalyzer {
     // returns a JSON array of a single slice
     public JSONObject squeezeResultsFromHashMap() {
 
+      //  System.out.println(playerHashMap);
+
         JSONObject slicedHolder = new JSONObject();
-        try {
+
             slicedHolder.put("time", playerHashMap.get("time").getPlaytime());
 
             JSONArray slicedJson = new JSONArray();
             playerHashMap.forEach((key, value) -> {
-                if (!key.equals("time") && (!key.equals("enemyscore"))) {
-                    slicedJson.put(value.getOverview());
-                }
-            });
+                if (!key.equals("time") && (!key.equals("enemyscore")))
+                {slicedJson.put(value.getOverview());}});
 
             HashMap<String, Player> playerHashMap2 = new HashMap<>();
             playerHashMap2.putAll(playerHashMap);
             ArrayList<Integer> playerscores = new ArrayList<>();
+        //    System.out.println(" size = " + playerHashMap2.size());
             playerHashMap2.forEach((key, value) -> {
-
                 if (!key.equals("enemyscore") && !key.equals("time")) {
-                    playerscores.add(value.getPersonalscore());
-                }
-            });
-
+              //      if (!playerHashMap2.containsKey("ignorestatus")) {System.out.println(key);}
+                    playerscores.add(value.getPersonalscore()); }});
             int teampoints = 0;
             for (int n = 0; n < playerscores.size(); n++) {
                 teampoints = teampoints + playerscores.get(n);
             }
             slicedHolder.put("score", teampoints);
-
             slicedHolder.put("enemyscore", playerHashMap.get("enemyscore").getPersonalscore());
-
             slicedHolder.put("slice", slicedJson);
-            if (!playerHashMap2.containsKey("ignorestatus")) {
-                System.out.println(slicedJson);
-                System.out.println("enemyscore "+playerHashMap.get("enemyscore").getPersonalscore());
-                System.out.println("Teampoints "+teampoints);
-            }
-        } catch (Exception e) {
-            System.out.println("Repeated with many repercussions");
-        }
-
+         //  if (!playerHashMap2.containsKey("ignorestatus")) {
+         //    //  System.out.println("Number of keys is "+playerHashMap2.size());
+         //    //  playerHashMap2.forEach((key, value) -> {
+         //    //      System.out.println(key);
+         //    //  });
+         //      if (!playerHashMap2.containsKey("ignorestatus")) {System.out.println(slicedJson);}
+         //      System.out.println("enemyscore " + playerHashMap.get("enemyscore").getPersonalscore());
+         //      System.out.println("Teampoints " + teampoints);
+         //  }
 
         //    System.out.println(" squeezeResultsFromHashMap "+slicedJson);
-
-
         return slicedHolder;
     }
 

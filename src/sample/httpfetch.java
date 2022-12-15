@@ -13,10 +13,11 @@ public class httpfetch {
     public Match bigFetch(String gameID) throws IOException
     {   String left = "https://www.legabasket.it/match/";
         String right = "/pbp/";
-        String q1 = Fetch(left + gameID + right + "1");
-        String q2 = Fetch(left + gameID + right + "2");
-        String q3 = Fetch(left + gameID + right + "3");
-        String q4 = Fetch(left + gameID + right + "4");
+        String rightest = "/ASC";
+        String q1 = Fetch(left + gameID + right + "1"+rightest);
+        String q2 = Fetch(left + gameID + right + "2"+rightest);
+        String q3 = Fetch(left + gameID + right + "3"+rightest);
+        String q4 = Fetch(left + gameID + right + "4"+rightest);
         Match match = new Match(q1, q2, q3, q4, gameID, gameID, gameID);
         return match;}
 

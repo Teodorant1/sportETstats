@@ -19,8 +19,8 @@ public class Player {
     public JSONObject getOverview() {
         JSONObject playerreportcard = new JSONObject();
 
-        double a = personalscore;
-        double b = playtime;
+       // double a = personalscore;
+       // double b = playtime;
     //    System.out.println(" pointsratio is "+  Double.valueOf(SCTratio) );
         playerreportcard.put("name", this.getFullname());
         playerreportcard.put("points", this.getPersonalscore());

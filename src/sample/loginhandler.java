@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.SimpleTimeZone;
 
 public class loginhandler implements HttpHandler {
 
@@ -53,6 +54,7 @@ public class loginhandler implements HttpHandler {
         if (AccessCard)
         {theresponse = "gamebreakdown";}
 
+        System.out.println(theresponse);
 
         return theresponse;
     }

@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class eventSorter {
@@ -22,6 +23,9 @@ public class eventSorter {
         JSONObject jsonObject1 = new JSONObject(matchQuadrant);
         JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
         JSONArray jsonArray = jsonObject2.getJSONArray("pbp");
+
+
+
         ArrayList<event> events = jsontoarraylist(jsonArray , quadrantID );
 
         events1.addAll(events);
